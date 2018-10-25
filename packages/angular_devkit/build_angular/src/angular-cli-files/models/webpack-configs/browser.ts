@@ -97,10 +97,13 @@ export function getBrowserConfig(wco: WebpackConfigOptions) {
             enforce: true,
             test: (module: { nameForCondition?: Function }, chunks: Array<{ name: string }>) => {
               const moduleName = module.nameForCondition ? module.nameForCondition() : '';
-
-              return /[\\/]node_modules[\\/]/.test(moduleName)
-                && !chunks.some(({ name }) => name === 'polyfills'
-                  || globalStylesBundleNames.includes(name));
+              if ( /[\\/]@capillarytech[\\/]/.test(moduleName) || /[\\/]@agm[\\/]/.test(moduleName)  ) {
+                    return false;
+                           } else {
+                                return /[\\/]node_modules[\\/]/.test(moduleName)
+                                    && !chunks.some(({ name }) => name === 'polyfills'
+                                        || globalStylesBundleNames.includes(name));
+                            }
             },
           },
         },
